@@ -1,17 +1,25 @@
 package org.example.change;
 
+import org.example.coin.CoinEnum;
 import org.example.coin.CoinSet;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class ChangeModule {
     public CoinSet getCoinSet(int cost) {
         var coinset = new CoinSet();
-        var coinValues = List.of(10000, 5000, 1000, 500, 100, 50, 10);
+        var coinValues = Arrays
+                .stream(CoinEnum.values())
+                .map(CoinEnum::getValue)
+                .sorted((a,b) -> b - a).toList();
 
         for(var coinValue: coinValues) {
-            while(cost >= coinValue) {
-                cost -= coinValue;
+            if(cost < coinValue) continue;
+
+            int coinCount = cost / coinValue;
+            cost -= (coinCount * coinValue);
+
+            for(int i = 0; i < coinCount; i++) {
                 coinset.addCoin(coinValue);
             }
         }

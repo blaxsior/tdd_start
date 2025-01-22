@@ -9,6 +9,9 @@ public class CoinSet {
     public void addCoin(int coin) {
         this.coins.add(coin);
     }
+    public void addCoin(CoinEnum coin) {
+        this.coins.add(coin.getValue());
+    }
 
     @Override
     public boolean equals(Object coinSet) {
@@ -21,5 +24,11 @@ public class CoinSet {
     public String toString() {
         var coin_str_list = coins.stream().sorted().map(String::valueOf).toList();
         return String.join(" ", coin_str_list);
+    }
+
+    public int getTotalBalance() {
+        return this.coins.stream()
+                .reduce(Integer::sum)
+                .orElse(0);
     }
 }
