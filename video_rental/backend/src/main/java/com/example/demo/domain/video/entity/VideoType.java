@@ -1,5 +1,6 @@
 package com.example.demo.domain.video.entity;
 
+import com.example.demo.domain.rental.cost.entity.CostPolicy;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,4 +22,7 @@ public class VideoType {
 
     @OneToMany(mappedBy = "videoType")
     private List<Video> videos;
+
+    @OneToMany(mappedBy = "videoType")
+    private List<CostPolicy> costPolicies;
 }

@@ -28,6 +28,9 @@ public class Video {
     @JoinColumn(name = "video_type_id")
     private VideoType videoType;
 
+    @Column(name ="video_type_id", updatable = false, insertable = false)
+    private Long videoTypeId;
+
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "video")
     private List<RentalInfo> rentalInfos;

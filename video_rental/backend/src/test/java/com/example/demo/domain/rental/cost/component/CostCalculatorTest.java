@@ -1,6 +1,6 @@
-package com.example.demo.domain.rental.component;
+package com.example.demo.domain.rental.cost.component;
 
-
+import com.example.demo.domain.rental.cost.entity.CostPolicy;
 import com.example.demo.domain.video.entity.Video;
 import com.example.demo.domain.video.entity.VideoType;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ class CostCalculatorTest {
         var type = VideoType.builder().id(1L).name("documentary").build();
         var type2 = VideoType.builder().id(2L).name("sports").build();
         Video video = Video.builder().id(0L).rentalCost(6000)
-                .title("test").videoType(type2).build();
+                .title("test").videoType(type2).videoTypeId(type2.getId()).build();
         int dayLong = 6;
 
         // 3일 이후부터는 50% 할인
@@ -55,6 +55,7 @@ class CostCalculatorTest {
                 .discountValue(50)
                 .minRentDay(3)
                 .videoType(type)
+                .videoTypeId(type.getId())
                 .build();
 
         int expected = 36000; // no discount

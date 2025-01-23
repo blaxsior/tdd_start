@@ -1,5 +1,6 @@
-package com.example.demo.domain.rental.component;
+package com.example.demo.domain.rental.cost.component;
 
+import com.example.demo.domain.rental.cost.entity.CostPolicy;
 import com.example.demo.domain.video.entity.Video;
 
 
@@ -19,7 +20,7 @@ public class CostCalculator {
         
         // (2) 해당 타입이 맞는지 검사
         var policyTargetId = policy.getVideoType().getId();
-        var videoTypeId = video.getVideoType().getId();
+        var videoTypeId = video.getVideoTypeId();
         if(!videoTypeId.equals(policyTargetId)) return defaultCost;
         
         // (3) 할인 정책 적용
