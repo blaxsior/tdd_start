@@ -101,4 +101,21 @@ class RentalServiceTest {
         assertThat(rentalInfo.getUser().getId()).isEqualTo(userId);
         assertThat(rentalInfo.getVideo().getId()).isEqualTo(videoId);
     }
+
+    @Test
+    @DisplayName("addRentalInfo: 이미 대여된 비디오를 요청 시 예외가 발생한다.")
+    void addRentalInfo_throw_if_video_already_rented() {
+        long userId = 1;
+        long notExistVideoId = 1;
+        int dayLong = 3;
+
+        rentalService.addRentalInfo(userId, notExistVideoId, dayLong);
+
+        assertThatThrownBy(() -> {
+            rentalService.addRentalInfo(userId, notExistVideoId, dayLong);
+        }).hasMessageContaining("video already rented");
+    }
+
+
+
 }

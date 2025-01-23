@@ -32,6 +32,9 @@ public class RentalService {
         var video = videoRepository.findById(videoId)
                 .orElseThrow(() -> new RuntimeException("cannot find video"));
 
+        var videoAlreadyExistCheck = rentalRepository.existsByVideoId(videoId);
+        if(videoAlreadyExistCheck) throw new RuntimeException("video already rented");
+
         var startDate = LocalDate.now();
         var dueDate = startDate.plusDays(dayLong);
 

@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "rental_info")
+// TODO 쿼리 최적화
 public class RentalInfo {
     @Id
     @GeneratedValue
@@ -27,7 +28,7 @@ public class RentalInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="video_id", nullable = false)
     private Video video;
