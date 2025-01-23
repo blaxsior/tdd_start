@@ -2,8 +2,10 @@ package com.example.demo.domain.rental.cost.component;
 
 import com.example.demo.domain.rental.cost.entity.CostPolicy;
 import com.example.demo.domain.video.entity.Video;
+import org.springframework.stereotype.Component;
 
 
+@Component
 public class CostCalculator {
     public int calculateCost(Video video, int dayLong, CostPolicy policy) {
         var pricePerDay = video.getRentalCost();
