@@ -1,5 +1,8 @@
 package com.example.demo.domain.rental.service;
 
+import com.example.demo.domain.rental.cost.component.CostCalculator;
+import com.example.demo.domain.rental.cost.entity.CostPolicy;
+import com.example.demo.domain.rental.cost.service.CostPolicyService;
 import com.example.demo.domain.rental.entity.RentalInfo;
 import com.example.demo.domain.rental.repository.RentalInfoRepository;
 import com.example.demo.domain.user.repository.UserRepository;
@@ -8,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -29,14 +33,20 @@ class RentalServiceTest {
     @Autowired
     VideoRepository videoRepository;
 
+    @Mock
+    CostPolicyService costPolicyService;
+
     RentalService rentalService;
 
     @BeforeEach
     void beforeEach() {
+        costPolicyService = mock(CostPolicyService.class);
         rentalService = new RentalService(
                 rentalRepository,
                 userRepository,
-                videoRepository
+                videoRepository,
+                costPolicyService,
+                new CostCalculator()
         );
     }
 
@@ -127,4 +137,30 @@ class RentalServiceTest {
 //        rentalService.addRentalInfo(userId, videoId);
     }
 
+    @Test
+    @DisplayName("getTotalCost: 사용자가 대여 중인 비디오 총 비용을 반환한다.")
+    void getTotalCost() {
+        //given
+        // 비용 정책 stub
+        // Mocking의 단점 언급할 때 사용
+        when(costPolicyService.findMatchedPolicy(anyLong()))
+        .then((mock) -> {
+            Long itemId = mock.getArgument(0);
+            System.out.println("item = " + itemId);
+            if(itemId == null) return null;
+            if(itemId == 1) return CostPolicy.builder().videoTypeId(1L).minRentDay(3).discountValue(20).build();
+            return null;
+        });
+        long userId = 1; // 유저 1
+        int dayLong1 = 3; // 비디오 1은 3일간 (3500)
+        int dayLong2 = 5; // 비디오 2는 5일간 (6000)
+        int expected = 3500 * 3 + 6000 * 3 + 4800 * 2;
+
+        // when 유저가 2개를 빌리면
+        rentalService.addRentalInfo(userId, 1, dayLong1);
+        rentalService.addRentalInfo(userId, 2, dayLong2);
+
+        int result = rentalService.getTotalCost(userId);
+        assertThat(result).isEqualTo(expected);
+    }
 }

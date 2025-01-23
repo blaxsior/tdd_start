@@ -21,7 +21,7 @@ public class CostCalculator {
         if(minRentDay >= dayLong) return defaultCost;
         
         // (2) 해당 타입이 맞는지 검사
-        var policyTargetId = policy.getVideoType().getId();
+        var policyTargetId = policy.getVideoTypeId();
         var videoTypeId = video.getVideoTypeId();
         if(!videoTypeId.equals(policyTargetId)) return defaultCost;
         

@@ -22,8 +22,8 @@ class CostCalculatorTest {
     void calculateCost_return_discount_cost() {
         // 비디오 / 대여 기간 / 가격 정책이 주어질 때 가격을 계산
         var type = VideoType.builder().id(1L).name("documentary").build();
-        Video video = Video.builder().id(0L).rentalCost(6000)
-                .title("test").videoType(type).build();
+        Video video = Video.builder().id(0L).videoTypeId(type.getId())
+                .rentalCost(6000).title("test").videoType(type).build();
         int dayLong = 6;
 
         // 3일 이후부터는 50% 할인
@@ -31,6 +31,7 @@ class CostCalculatorTest {
                 .discountValue(50)
                 .minRentDay(3)
                 .videoType(type)
+                .videoTypeId(type.getId())
                 .build();
 
         int expected = 27000; // 6000 * 3 + 3000 * 3;
@@ -46,7 +47,7 @@ class CostCalculatorTest {
         // 비디오 / 대여 기간 / 가격 정책이 주어질 때 가격을 계산
         var type = VideoType.builder().id(1L).name("documentary").build();
         var type2 = VideoType.builder().id(2L).name("sports").build();
-        Video video = Video.builder().id(0L).rentalCost(6000)
+        Video video = Video.builder().id(0L).videoTypeId(type.getId()).rentalCost(6000)
                 .title("test").videoType(type2).videoTypeId(type2.getId()).build();
         int dayLong = 6;
 
@@ -69,7 +70,7 @@ class CostCalculatorTest {
     void calculateCost_return_default_if_no_policy() {
         // 비디오 / 대여 기간 / 가격 정책이 주어질 때 가격을 계산
         var type = VideoType.builder().id(1L).name("documentary").build();
-        Video video = Video.builder().id(0L).rentalCost(6000)
+        Video video = Video.builder().id(0L).videoTypeId(type.getId()).rentalCost(6000)
                 .title("test").videoType(type).build();
         int dayLong = 6;
         int expected = 36000; // no discount
@@ -83,13 +84,14 @@ class CostCalculatorTest {
     void calculateCost_return_default_if_rent_day_not_enough() {
         // 비디오 / 대여 기간 / 가격 정책이 주어질 때 가격을 계산
         var type = VideoType.builder().id(1L).name("documentary").build();
-        Video video = Video.builder().id(0L).rentalCost(6000)
+        Video video = Video.builder().id(0L).videoTypeId(type.getId()).rentalCost(6000)
                 .title("test").videoType(type).build();
         // 3일 이후부터는 50% 할인
         CostPolicy costPolicy = CostPolicy.builder()
                 .discountValue(50)
                 .minRentDay(3)
                 .videoType(type)
+                .videoTypeId(type.getId())
                 .build();
         int dayLong = 1;
 
