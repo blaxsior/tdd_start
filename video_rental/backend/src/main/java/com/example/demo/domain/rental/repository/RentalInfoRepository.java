@@ -18,4 +18,6 @@ public interface RentalInfoRepository extends JpaRepository<RentalInfo, Long> {
 
     @Query("select r from RentalInfo r join fetch r.video where r.userId = :userId")
     List<RentalInfo> findByUserIdWithFetch(Long userId);
+
+    List<RentalInfo> findByUserId(Long userId);
 }

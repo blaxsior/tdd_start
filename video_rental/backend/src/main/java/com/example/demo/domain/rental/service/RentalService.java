@@ -54,11 +54,15 @@ public class RentalService {
         var startDate = LocalDate.now();
         var dueDate = startDate.plusDays(dayLong);
 
+        var policy = policyService.findMatchedPolicy(video.getVideoTypeId());
+        var cost = costCalculator.calculateCost(video, dayLong, policy);
+
         var rentalInfo = RentalInfo.builder()
                 .user(user)
                 .video(video)
                 .startDate(startDate)
                 .dueDate(dueDate)
+                .cost(cost)
                 .build();
 
         rentalRepository.save(rentalInfo);
@@ -76,17 +80,10 @@ public class RentalService {
 
     @Transactional(readOnly = true)
     public int getTotalCost(Long userId) {
-        var rentalInfos =  this.rentalRepository.findByUserIdWithFetch(userId);
+        var rentalInfos =  this.rentalRepository.findByUserId(userId);
 
-        int totalCost = 0;
-
-        for(var rental: rentalInfos) {
-            var video = rental.getVideo();
-            var policy = policyService.findMatchedPolicy(video.getVideoTypeId());
-            int dayLong = (int)ChronoUnit.DAYS.between(rental.getStartDate(), rental.getDueDate());
-            totalCost += costCalculator.calculateCost(video, dayLong,policy);
-        }
-
-        return totalCost;
+        return rentalInfos.stream()
+                .map(RentalInfo::getCost).
+                reduce(Integer::sum).orElse(0);
     }
 }

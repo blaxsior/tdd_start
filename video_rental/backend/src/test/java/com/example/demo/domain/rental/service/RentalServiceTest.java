@@ -163,4 +163,7 @@ class RentalServiceTest {
         int result = rentalService.getTotalCost(userId);
         assertThat(result).isEqualTo(expected);
     }
+//
+//    @Test
+//    @DisplayName("getRentalItemList: 현재 사용자가 빌린 아이템 정보를 표현한다.")
 }

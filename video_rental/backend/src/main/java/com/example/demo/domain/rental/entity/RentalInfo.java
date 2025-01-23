@@ -22,20 +22,23 @@ public class RentalInfo {
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "due_date",nullable = false)
+    @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
+
+    @Column(name = "cost", nullable = false)
+    private Integer cost = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name ="user_id", updatable = false, insertable = false)
+    @Column(name = "user_id", updatable = false, insertable = false)
     private Long userId;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="video_id", nullable = false)
+    @JoinColumn(name = "video_id", nullable = false)
     private Video video;
 
-    @Column(name ="video_id", updatable = false, insertable = false)
+    @Column(name = "video_id", updatable = false, insertable = false)
     private Long videoId;
 }
