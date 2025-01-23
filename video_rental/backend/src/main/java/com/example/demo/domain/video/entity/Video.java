@@ -2,9 +2,7 @@ package com.example.demo.domain.video.entity;
 
 import com.example.demo.domain.rental.entity.RentalInfo;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +10,18 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "video")
 public class Video {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name="title", nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(name = "rental_cost", nullable = false)
     private Integer rentalCost;
 
     @ManyToOne(fetch = FetchType.LAZY)
