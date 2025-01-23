@@ -130,11 +130,32 @@ class RentalServiceTest {
     @Test
     @DisplayName("findAllRentalInfos: 사용자의 모든 대여 정보를 제공한다")
     void findAllRentalInfos() {
-        long userId = 1;
-        long videoId = 1;
-        int dayLong = 3;
+        //given
+        // 비용 정책 stub
+        // Mocking의 단점 언급할 때 사용
+        when(costPolicyService.findMatchedPolicy(anyLong()))
+                .then((mock) -> {
+                    Long itemId = mock.getArgument(0);
+                    System.out.println("item = " + itemId);
+                    if(itemId == null) return null;
+                    if(itemId == 1) return CostPolicy.builder().videoTypeId(1L).minRentDay(3).discountValue(20).build();
+                    return null;
+                });
+        long userId = 1; // 유저 1
+        int dayLong1 = 3; // 비디오 1은 3일간 (3500)
+        int expectedCost1 = 3500 * 3; // 비용
 
-//        rentalService.addRentalInfo(userId, videoId);
+        int dayLong2 = 5; // 비디오 2는 5일간 (6000)
+        int expectedCost2 = 6000 * 3 + 4800 * 2; // 비용
+
+        // when 유저가 2개를 빌리면
+        rentalService.addRentalInfo(userId, 1, dayLong1);
+        rentalService.addRentalInfo(userId, 2, dayLong2);
+
+        var rentalList = rentalService.findAllRentalInfos(userId);
+        assertThat(rentalList).hasSize(2);
+
+        var item1 =
     }
 
     @Test

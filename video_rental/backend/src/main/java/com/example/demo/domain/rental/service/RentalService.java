@@ -2,6 +2,7 @@ package com.example.demo.domain.rental.service;
 
 import com.example.demo.domain.rental.cost.component.CostCalculator;
 import com.example.demo.domain.rental.cost.service.CostPolicyService;
+import com.example.demo.domain.rental.dto.RentalDetailDto;
 import com.example.demo.domain.rental.entity.RentalInfo;
 import com.example.demo.domain.rental.repository.RentalInfoRepository;
 import com.example.demo.domain.user.repository.UserRepository;
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RentalService {
@@ -85,5 +87,14 @@ public class RentalService {
         return rentalInfos.stream()
                 .map(RentalInfo::getCost).
                 reduce(Integer::sum).orElse(0);
+    }
+
+    public List<RentalDetailDto> findAllRentalInfos(long userId) {
+        var rentalInfoList = rentalRepository.findByUserIdWithFetch(userId);
+        var dtos = new ArrayList<RentalDetailDto>();
+
+        for(var rentalInfo: rentalInfoList) {
+
+        }
     }
 }

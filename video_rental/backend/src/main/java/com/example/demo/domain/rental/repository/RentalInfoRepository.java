@@ -16,7 +16,12 @@ public interface RentalInfoRepository extends JpaRepository<RentalInfo, Long> {
 //    @Query("select count(r) from RentalInfo r where r.video.id = :videoId limit 1")
     boolean existsByVideoId(Long videoId);
 
-    @Query("select r from RentalInfo r join fetch r.video where r.userId = :userId")
+    @Query("""
+            select r from RentalInfo r 
+            join fetch r.video v 
+            join fetch v.videoType 
+            where r.userId = :userId
+            """)
     List<RentalInfo> findByUserIdWithFetch(Long userId);
 
     List<RentalInfo> findByUserId(Long userId);
