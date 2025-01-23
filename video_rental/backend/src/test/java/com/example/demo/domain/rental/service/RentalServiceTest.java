@@ -73,7 +73,7 @@ class RentalServiceTest {
     @Test
     @DisplayName("addRentalInfo: 존재하지 않는 비디오를 요청 시 예외가 발생한다.")
     void addRentalInfo_throw_if_video_not_exist() {
-        long userId = 1; 
+        long userId = 1;
         long notExistVideoId = 100; // 존재하지 않는 비디오
         int dayLong = 3;
 
@@ -117,5 +117,14 @@ class RentalServiceTest {
     }
 
 
+    @Test
+    @DisplayName("findAllRentalInfos: 사용자의 모든 대여 정보를 제공한다")
+    void findAllRentalInfos() {
+        long userId = 1;
+        long videoId = 1;
+        int dayLong = 3;
+
+//        rentalService.addRentalInfo(userId, videoId);
+    }
 
 }
