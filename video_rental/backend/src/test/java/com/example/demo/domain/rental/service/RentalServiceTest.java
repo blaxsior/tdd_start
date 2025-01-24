@@ -18,6 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.time.temporal.ChronoUnit;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -152,10 +154,21 @@ class RentalServiceTest {
         rentalService.addRentalInfo(userId, 1, dayLong1);
         rentalService.addRentalInfo(userId, 2, dayLong2);
 
+        // then 두 비디오에 대한 대여 정보를 제공한다.
         var rentalList = rentalService.findAllRentalInfos(userId);
         assertThat(rentalList).hasSize(2);
 
-        var item1 =
+        var rental1 = rentalList.get(0);
+        var timespan1 = ChronoUnit.DAYS.between(rental1.getStartDate(),rental1.getDueDate());
+        assertThat(rental1.getRentalCost()).isEqualTo(expectedCost1);
+        assertThat(timespan1).isEqualTo(dayLong1);
+
+
+        var rental2 = rentalList.get(1);
+
+        var timespan2 = ChronoUnit.DAYS.between(rental2.getStartDate(),rental2.getDueDate());
+        assertThat(rental2.getRentalCost()).isEqualTo(expectedCost2);
+        assertThat(timespan2).isEqualTo(dayLong2);
     }
 
     @Test

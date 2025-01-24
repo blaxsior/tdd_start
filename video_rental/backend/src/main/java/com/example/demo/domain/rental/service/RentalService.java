@@ -94,7 +94,16 @@ public class RentalService {
         var dtos = new ArrayList<RentalDetailDto>();
 
         for(var rentalInfo: rentalInfoList) {
-
+            var rentalDetail = RentalDetailDto.builder()
+                    .name(rentalInfo.getVideo().getTitle())
+                    .type(rentalInfo.getVideo().getVideoType().getName())
+                    .rentalCost(rentalInfo.getCost())
+                    .startDate(rentalInfo.getStartDate())
+                    .dueDate(rentalInfo.getDueDate())
+                    .build();
+            dtos.add(rentalDetail);
         }
+
+        return dtos;
     }
 }
